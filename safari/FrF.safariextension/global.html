@@ -1,0 +1,41 @@
+<html>
+<body>
+	<script type="text/javascript">
+		safari.application.addEventListener("message", handleMessage, false);
+		
+		function handleMessage(event) {
+			switch (event.name) {
+			case "canLoad":
+				event.message = safari.extension.settings;
+    			break;
+    			
+    		/*case "openViewImageTab":
+    			var thisTab = safari.application.activeBrowserWindow.activeTab;
+    			
+    			var browserWindow = thisTab.browserWindow;
+  				if (!browserWindow) break;
+    			
+    			var tabs = browserWindow.tabs;
+    			
+    			var pos = tabs.length;
+    			for (var i = 0; i < tabs.length; i++) {
+    				if (tabs[i] == thisTab) {
+    					pos = i + 1;
+    					break;
+    				}
+    			}
+    			
+    			var newTab = browserWindow.openTab();
+    			browserWindow.insertTab(newTab, pos);
+    			
+    			newTab.addEventListener("close", function() {
+    				thisTab.activate();
+    			}, false);
+    			
+    			newTab.url = event.message;
+    			break;*/
+			}
+		}
+</script>
+</body>
+</html>
