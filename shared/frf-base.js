@@ -74,6 +74,10 @@ function _FrF_RewriteLinks() {
 			} else {
 				$(this).attr("href", prefix + _FrF_MangleUrl(url));
 			}
+		} else if (/monosnap\.com\/functions\/facebook\/thumb\.php\?id=/g.test(url)) {
+			// monosnap inserts a shitty thumbnail, link to normal image instead
+			url = "https://api.monosnap.com/image/download" + url.substring(url.indexOf("?id="));
+			$(this).attr("href", url);
 		}
 		$(this).addClass("frf-hooked");
 	});
