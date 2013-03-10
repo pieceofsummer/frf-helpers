@@ -199,6 +199,26 @@ function _FrF_ModifyProfile() {
     _FrF_LoadComments(ownerSID, userSID, userName);
 }
 
+// called automatically when settings initialization is completed
+function _FrF_InitCompleted() {
+    _FrF_RewriteLinks();
+    
+    _FrF_ModifyProfile();
+        	
+	// subscribe to image clicks
+	$("#feed").on("click", ".images.media .container a:not(.l_play)", _FrF_ImageClicked);
+
+	// listen for further DOM updates
+
+	var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+	
+	var postsObserver = new MutationObserver(_FrF_RewriteLinks);
+    postsObserver.observe(document.querySelector("#feed"), { childList: true, subtree: true });
+    
+    var popupObserver = new MutationObserver(_FrF_ModifyPopup);
+    popupObserver.observe(document.querySelector("body"), { childList: true });
+}
+
 $(function() {
 	// create a placeholder for in-page view
 	var s = "<div id=\"frf-image-viewer\" style=\"display: none\" tabindex=\"1\">\n" + 
@@ -212,22 +232,6 @@ $(function() {
 	$("body").append(s2);
 	
 	$("#frf-image-viewer").click(_FrF_HideImageViewer).keyup(_FrF_HideImageViewerKbd);
-	
+
 	_FrF_InitSettings();
-	
-	// subscribe to image clicks
-	$("#feed").on("click", ".images.media .container a:not(.l_play)", _FrF_ImageClicked);
-	
-	// rewrite links and listen for further DOM updates
-	_FrF_RewriteLinks();
-	
-	var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-	
-	var postsObserver = new MutationObserver(_FrF_RewriteLinks);
-    postsObserver.observe(document.querySelector("#feed"), { childList: true, subtree: true });
-    
-    var popupObserver = new MutationObserver(_FrF_ModifyPopup);
-    popupObserver.observe(document.querySelector("body"), { childList: true });
-    
-    _FrF_ModifyProfile();
 });
