@@ -63,7 +63,7 @@ function _FrF_RewriteLinks() {
 	var prefix = urlPrefix;
 	if (!prefix) return;
 
-	$(".images.media .container a:not(.l_play, .frf-hooked)").each(function() {
+	$(".images.media .container a:not(.l_play, .frf-hooked), .comments .comment .content a:not(.l_play, .frf-hooked)").each(function() {
 		var url = $(this).attr("href");
 		if (/friendfeed\-media\.com/g.test(url) || 
 			/\.jpg$/g.test(url) || /\.jpeg$/g.test(url) ||
@@ -206,7 +206,7 @@ function _FrF_InitCompleted() {
     _FrF_ModifyProfile();
         	
 	// subscribe to image clicks
-	$("#feed").on("click", ".images.media .container a:not(.l_play)", _FrF_ImageClicked);
+	$("#feed").on("click", ".images.media .container a:not(.l_play), .comments .comment .content a:not(.l_play)", _FrF_ImageClicked);
 
 	// listen for further DOM updates
 
