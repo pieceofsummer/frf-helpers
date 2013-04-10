@@ -1,6 +1,6 @@
 {
   "name": "FrF Helpers",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "manifest_version": 2,
   "description": "FriendFeed image preview helpers",
   "icons": { "128": "Icon.png" },
