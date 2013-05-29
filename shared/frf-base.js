@@ -1,4 +1,5 @@
 _frf_scroll_position = 0;
+_frf_last_focus_textarea = null;
 settings = { };
 urlPrefix = undefined;
 
@@ -40,6 +41,43 @@ function _FrF_ImageClicked(e) {
 			});
 
 			return false;
+		}
+	}
+	
+	// do not intercept
+	return true;
+}
+
+function _FrF_ProfileLinkClicked(e) {
+	var isCmd = e.metaKey || e.ctrlKey;
+	if (isCmd) {
+		var txt = null;
+		$(".commentform textarea[name=body]").each(function () {
+			if (this == _frf_last_focus_textarea) {
+				txt = this;
+				return false;
+			}
+		});
+		if (txt) {
+			var name = $(this).attr("href");
+			if (name) {
+				name = "@" + name.substring(1);
+				
+				if (txt.selectionStart || txt.selectionStart == '0') {
+            		var startPos = txt.selectionStart;
+            		var endPos = txt.selectionEnd;
+            		txt.value = txt.value.substring(0, startPos) + name + txt.value.substring(endPos, txt.value.length);
+            		txt.focus();
+            		txt.selectionStart = startPos + name.length;
+            		txt.selectionEnd = startPos + name.length;
+        		} else {
+            		txt.value += name;
+            		txt.focus();
+        		}
+        		
+        		e.stopPropagation();
+        		return false;
+			}
 		}
 	}
 	
@@ -207,6 +245,10 @@ function _FrF_InitCompleted() {
         	
 	// subscribe to image clicks
 	$("#feed").on("click", ".images.media .container a:not(.l_play), .comments .comment .content a:not(.l_play)", _FrF_ImageClicked);
+
+	// subscribe to link clicks
+	$("#feed").on("focus", "textarea", function () { _frf_last_focus_textarea = this; });
+	$("#feed").on("click", ".l_profile", _FrF_ProfileLinkClicked);
 
 	// listen for further DOM updates
 
